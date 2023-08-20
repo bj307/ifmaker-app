@@ -1,92 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ifmaker_app/src/auth/components/custom_text_field.dart';
-
-// class TelaLogin extends StatelessWidget {
-//   const TelaLogin({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       backgroundColor: Colors.green,
-//       body: Column(children: [
-//         const Expanded(
-//           flex: 1,
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Text.rich(TextSpan(
-//                   style: TextStyle(
-//                     fontSize: 40,
-//                   ),
-//                   children: [
-//                     TextSpan(
-//                         text: 'IF',
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                           fontWeight: FontWeight.bold,
-//                         )),
-//                     TextSpan(
-//                         text: 'Maker',
-//                         style: TextStyle(
-//                           color: Color.fromARGB(255, 241, 28, 13),
-//                           fontWeight: FontWeight.bold,
-//                         ))
-//                   ])),
-//               Text.rich(TextSpan(
-//                   style: TextStyle(
-//                     fontSize: 20,
-//                   ),
-//                   children: [
-//                     TextSpan(
-//                         text: 'Login',
-//                         style: TextStyle(
-//                             color: Colors.white, fontWeight: FontWeight.w500))
-//                   ]))
-//             ],
-//           ),
-//         ),
-//         Expanded(
-//           flex: 3,
-//           child: Container(
-//             padding: const EdgeInsets.symmetric(
-//               horizontal: 32,
-//               vertical: 40,
-//             ),
-//             decoration: const BoxDecoration(
-//                 color: Colors.white,
-//                 borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-//             child: Column(children: [
-//               const CustomTextField(
-//                 icon: Icons.email,
-//                 label: 'Email',
-//               ),
-//               const CustomTextField(
-//                 icon: Icons.lock,
-//                 label: 'Senha',
-//                 isSecret: true,
-//               ),
-//               SizedBox(
-//                   height: 33,
-//                   width: 120,
-//                   child: ElevatedButton(
-//                       style: ElevatedButton.styleFrom(
-//                           shadowColor: const Color.fromARGB(255, 241, 28, 13),
-//                           backgroundColor: Colors.green,
-//                           shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(8))),
-//                       onPressed: () {},
-//                       child: const Text(
-//                         'Entrar',
-//                         style: TextStyle(fontSize: 16, color: Colors.white),
-//                       )))
-//             ]),
-//           ),
-//         )
-//       ]),
-//     );
-//   }
-// }
+import 'package:ifmaker_app/src/components/custom_text_field.dart';
+import 'package:ifmaker_app/src/dashboard/page_base.dart';
 
 class TelaLogin extends StatelessWidget {
   const TelaLogin({super.key});
@@ -110,8 +24,9 @@ class TelaLogin extends StatelessWidget {
                       MediaQuery.of(context).size.height * 0.25),
                   painter: MyPainter(),
                 ),
-                // Seu conteúdo aqui
-                Center(
+
+                //header logo
+                const Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -119,6 +34,7 @@ class TelaLogin extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 40,
                           ),
+                          //Titulo/logo
                           children: [
                             TextSpan(
                                 text: 'IF',
@@ -137,9 +53,10 @@ class TelaLogin extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                           ),
+                          //campus
                           children: [
                             TextSpan(
-                                text: 'Login',
+                                text: 'by Campus Urutaí',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500))
@@ -159,18 +76,38 @@ class TelaLogin extends StatelessWidget {
                 vertical: 40,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  //titulo login
+                  const Padding(
+                    padding: EdgeInsetsDirectional.only(bottom: 40),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text.rich(
+                          TextSpan(style: TextStyle(fontSize: 26), children: [
+                        TextSpan(
+                            text: 'Faça Login',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ))
+                      ])),
+                    ),
+                  ),
+                  //email
                   const CustomTextField(
                     icon: Icons.email,
                     label: 'Email',
                   ),
+                  //senha
                   const CustomTextField(
                     icon: Icons.lock,
                     label: 'Senha',
                     isSecret: true,
                   ),
+                  //botao Entrar
                   SizedBox(
-                      height: 33,
+                      height: 45,
                       width: 120,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -179,7 +116,12 @@ class TelaLogin extends StatelessWidget {
                               backgroundColor: Colors.green,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (c) {
+                              return const PageBase();
+                            }));
+                          },
                           child: const Text(
                             'Entrar',
                             style: TextStyle(fontSize: 16, color: Colors.white),
