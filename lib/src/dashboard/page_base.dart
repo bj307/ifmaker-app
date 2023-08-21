@@ -66,7 +66,7 @@ class _PageBaseState extends State<PageBase> {
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        children: [HomeTab()],
+        children: const [HomeTab()],
       ),
     );
   }
