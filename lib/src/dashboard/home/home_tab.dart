@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ifmaker_app/src/components/card_dash.dart';
-import 'package:ifmaker_app/src/dashboard/ponto/qr_code_ponto.dart';
+import 'package:ifmaker_app/src/components/project_card.dart';
+//import 'package:ifmaker_app/src/dashboard/ponto/qr_code_ponto.dart';
 import 'package:ifmaker_app/src/config/app_data.dart' as app_data;
+import 'package:ifmaker_app/src/dashboard/page_base.dart' as page_base;
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -25,10 +27,12 @@ class HomeTab extends StatelessWidget {
               ])),
             ),
           ),
+
           //grid 3 cards
           Expanded(
+            flex: 1,
             child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -42,7 +46,57 @@ class HomeTab extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
+
+          //projetos
+          Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Color.fromARGB(255, 218, 216, 216),
+                            blurRadius: 4)
+                      ], // Cor de fundo
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Column(
+                      children: [
+                        const Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(12, 12, 0, 16),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Meus Projetos',
+                                style: TextStyle(
+                                    color: Color(0xFF4CB050),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 6,
+                            child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 1,
+                                        mainAxisSpacing: 10,
+                                        childAspectRatio: 9 / 2),
+                                itemCount: app_data.projects.length,
+                                itemBuilder: (_, index) {
+                                  return ProjetoCard(
+                                      project: app_data.projects[index]);
+                                })),
+                      ],
+                    )),
+              ))
         ],
       ),
 
@@ -57,10 +111,12 @@ class HomeTab extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 16),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacement(MaterialPageRoute(builder: (c) {
-                return const QrCodePonto();
-              }));
+              page_base.PageBase.changePage(context, 1);
+
+              // Navigator.of(context)
+              //     .pushReplacement(MaterialPageRoute(builder: (c) {
+              //   return const QrCodePonto();
+              // }));
             },
             child: Container(
               width: 60, // Largura do ícone (ajuste conforme necessário)

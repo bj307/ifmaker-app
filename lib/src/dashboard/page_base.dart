@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:ifmaker_app/src/dashboard/home/home_tab.dart';
+import 'package:ifmaker_app/src/dashboard/ponto/qr_code_ponto.dart';
 
 class PageBase extends StatefulWidget {
   const PageBase({super.key});
-
   @override
   State<PageBase> createState() => _PageBaseState();
+
+  static void changePage(BuildContext context, int newIndex) {
+    final state = context.findAncestorStateOfType<_PageBaseState>();
+    if (state != null) {
+      state.changePage(newIndex);
+    }
+  }
 }
 
 class _PageBaseState extends State<PageBase> {
   int currencyIndex = 0;
   final pageController = PageController();
+
+  void changePage(int index) {
+    setState(() {
+      currencyIndex = index;
+      pageController.jumpToPage(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +36,12 @@ class _PageBaseState extends State<PageBase> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: GestureDetector(
-              onTap: () {}, //abre menu
+              onTap: () {
+                setState(() {
+                  currencyIndex = 0;
+                  pageController.jumpToPage(currencyIndex);
+                });
+              }, //abre menu
               child: Container(
                 width: 40, // Largura do ícone (ajuste conforme necessário)
                 height: 40, // Altura do ícone (ajuste conforme necessário)
@@ -59,14 +78,13 @@ class _PageBaseState extends State<PageBase> {
               ),
             ),
           ),
-          //IconButton(onPressed: () {}, icon: const Icon(Icons.person))
         ],
       ),
 
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        children: const [HomeTab()],
+        children: const [HomeTab(), QrCodePonto()],
       ),
     );
   }
