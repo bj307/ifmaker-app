@@ -71,6 +71,7 @@ class TelaLogin extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Container(
+              width: MediaQuery.of(context).size.width > 600 ? 600 : null,
               padding: const EdgeInsets.symmetric(
                 horizontal: 32,
                 vertical: 40,

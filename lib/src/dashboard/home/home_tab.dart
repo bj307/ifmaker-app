@@ -8,6 +8,8 @@ import 'package:ifmaker_app/src/dashboard/page_base.dart' as page_base;
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +36,11 @@ class HomeTab extends StatelessWidget {
             child: GridView.builder(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
-                  childAspectRatio: 9 / 6),
+                  childAspectRatio: MediaQuery.of(context).size.width < 600 ? 9 / 6 : MediaQuery.of(context).size.width / 200),
               itemCount: app_data.cards.length,
               itemBuilder: (_, index) {
                 return CardDash(
@@ -65,9 +67,9 @@ class HomeTab extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const Expanded(
-                          flex: 1,
-                          child: Padding(
+                        Expanded(
+                          flex: MediaQuery.of(context).size.width > 600 ? 1 : 1,
+                          child: const Padding(
                             padding: EdgeInsets.fromLTRB(12, 12, 0, 16),
                             child: Align(
                               alignment: Alignment.topLeft,
@@ -82,13 +84,13 @@ class HomeTab extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                            flex: 6,
+                          flex: MediaQuery.of(context).size.width > 600 ? 5 : 6,
                             child: GridView.builder(
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                    SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 1,
                                         mainAxisSpacing: 10,
-                                        childAspectRatio: 9 / 2),
+                                        childAspectRatio: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 100 : 9 / 2),
                                 itemCount: app_data.projects.length,
                                 itemBuilder: (_, index) {
                                   return ProjetoCard(
