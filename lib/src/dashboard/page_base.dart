@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ifmaker_app/src/dashboard/home/home_tab.dart';
 import 'package:ifmaker_app/src/dashboard/ponto/qr_code_ponto.dart';
+import 'package:ifmaker_app/src/dashboard/projeto/projeto.dart';
 
 class PageBase extends StatefulWidget {
   const PageBase({super.key});
@@ -84,7 +85,13 @@ class _PageBaseState extends State<PageBase> {
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        children: const [HomeTab(), QrCodePonto()],
+        children: const [
+          HomeTab(),
+          QrCodePonto(),
+          ProjetoPage(
+            nome: "",
+          )
+        ],
       ),
     );
   }

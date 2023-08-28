@@ -1,7 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class QrCodePonto extends StatefulWidget {
   const QrCodePonto({super.key});
@@ -11,49 +9,17 @@ class QrCodePonto extends StatefulWidget {
 }
 
 class _QrCodePontoState extends State<QrCodePonto> {
-  List<CameraDescription> cameras = [];
-  CameraController? controller;
-  XFile? imagem;
-  Size? size;
+  String tokenQrCode = '';
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    try {
-      cameras = await availableCameras();
-      _startCamera();
-    } on CameraException catch (e) {
-      print(e.description);
-    }
-  }
-
-  _startCamera() {
-    if (cameras.isEmpty) {
-      print("Camera não encontrada");
-    } else {
-      _previewCamera(cameras.first);
-    }
-  }
-
-  _previewCamera(CameraDescription camera) async {
-    final CameraController cameraController = CameraController(
-        camera, ResolutionPreset.high,
-        enableAudio: false, imageFormatGroup: ImageFormatGroup.jpeg);
-    controller = cameraController;
-
-    try {
-      await cameraController.initialize();
-    } on CameraException catch (e) {
-      print(e.description);
-    }
-
-    if (mounted) {
-      setState(() {});
-    }
+  readQRCode() async {
+    String code = await FlutterBarcodeScanner.scanBarcode(
+        "#FFFFFF", "Cancelar", false, ScanMode.QR);
+    setState(() => tokenQrCode = code != '-1' ? code : '');
   }
 
   @override
@@ -82,12 +48,11 @@ class _QrCodePontoState extends State<QrCodePonto> {
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white, // Cor de fundo
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                          color: const Color(0xFF4CB050), width: 1.0),
-                    ),
-                    child: _arquivoWidget())),
+                  color: Colors.white, // Cor de fundo
+                  borderRadius: BorderRadius.circular(5),
+                  border:
+                      Border.all(color: const Color(0xFF4CB050), width: 1.0),
+                ))),
           ),
           //botao registrar
           Padding(
@@ -100,7 +65,7 @@ class _QrCodePontoState extends State<QrCodePonto> {
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
-                    onPressed: () {},
+                    onPressed: readQRCode,
                     child: const Text(
                       'Escanear QR Code',
                       style: TextStyle(
@@ -144,26 +109,6 @@ class _QrCodePontoState extends State<QrCodePonto> {
           ),
         ],
       ),
-    );
-  }
-
-  _cameraPreviewWidget() {
-    final CameraController? cameraController = controller;
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return const Text('Erro ao abrir a câmera');
-    } else {
-      return AspectRatio(
-        aspectRatio: 1.0, // Proporção quadrada (1:1)
-        child: CameraPreview(controller!),
-      );
-    }
-  }
-
-  _arquivoWidget() {
-    return Container(
-      child: imagem == null
-          ? _cameraPreviewWidget()
-          : Image.file(File(imagem!.path), fit: BoxFit.contain),
     );
   }
 }
