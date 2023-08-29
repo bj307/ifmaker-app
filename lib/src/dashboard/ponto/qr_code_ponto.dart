@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:ifmaker_app/src/components/code_input.dart';
+import 'package:pinput/pinput.dart';
 
 class QrCodePonto extends StatefulWidget {
   const QrCodePonto({super.key});
@@ -10,21 +10,35 @@ class QrCodePonto extends StatefulWidget {
 }
 
 class _QrCodePontoState extends State<QrCodePonto> {
-  String tokenQrCode = '';
+  final pinController = TextEditingController();
+  final focusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
+  String code = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  readQRCode() async {
-    String code = await FlutterBarcodeScanner.scanBarcode(
-        "#FFFFFF", "Cancelar", false, ScanMode.QR);
-    setState(() => tokenQrCode = code != '-1' ? code : '');
-  }
-
   @override
   Widget build(BuildContext context) {
+    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
+    const fillColor = Color.fromRGBO(243, 246, 249, 0);
+    const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
+
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+        fontSize: 22,
+        color: Color.fromRGBO(30, 60, 87, 1),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(19),
+        border: Border.all(color: borderColor),
+      ),
+    );
+
     return Scaffold(
       body: Column(
         children: [
@@ -46,14 +60,48 @@ class _QrCodePontoState extends State<QrCodePonto> {
           //box camera
           Expanded(
             child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
-                child: Container(
-                    decoration: BoxDecoration(
-                  color: Colors.white, // Cor de fundo
-                  borderRadius: BorderRadius.circular(5),
-                  border:
-                      Border.all(color: const Color(0xFF4CB050), width: 1.0),
-                ))),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
+              child: Pinput(
+                controller: pinController,
+                focusNode: focusNode,
+                androidSmsAutofillMethod:
+                    AndroidSmsAutofillMethod.smsUserConsentApi,
+                listenForMultipleSmsOnAndroid: true,
+                defaultPinTheme: defaultPinTheme,
+                separatorBuilder: (index) => const SizedBox(width: 8),
+                hapticFeedbackType: HapticFeedbackType.lightImpact,
+                onCompleted: (pin) {
+                  code = pin;
+                },
+                cursor: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 9),
+                      width: 22,
+                      height: 1,
+                      color: focusedBorderColor,
+                    ),
+                  ],
+                ),
+                focusedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: focusedBorderColor),
+                  ),
+                ),
+                submittedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    color: fillColor,
+                    borderRadius: BorderRadius.circular(19),
+                    border: Border.all(color: focusedBorderColor),
+                  ),
+                ),
+                errorPinTheme: defaultPinTheme.copyBorderWith(
+                  border: Border.all(color: Colors.redAccent),
+                ),
+              ),
+            ),
           ),
           //botao registrar
           Padding(
@@ -66,21 +114,15 @@ class _QrCodePontoState extends State<QrCodePonto> {
                         backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
-                    onPressed: () async {
-                      var res = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const SimpleBarcodeScannerPage(),
-                          ));
-                      setState(() {
-                        if (res is String) {
-                          tokenQrCode = res;
-                        }
-                      });
+                    onPressed: () {
+                      if (code == '1234') {
+                        debugPrint('valid $code');
+                      } else {
+                        debugPrint('invalid $code');
+                      }
                     },
                     child: const Text(
-                      'Escanear QR Code',
+                      'Validar',
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
