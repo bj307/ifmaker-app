@@ -1,4 +1,4 @@
-import 'package:ifmaker_app/src/model/card_model.dart';
+import 'package:ifmaker_app/src/data/model/card_model.dart';
 
 //cards infos
 CardModel projetos = CardModel(titulo: "Projetos", info: "5");

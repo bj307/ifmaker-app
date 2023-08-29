@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ifmaker_app/src/components/code_input.dart';
 import 'package:pinput/pinput.dart';
 
 class QrCodePonto extends StatefulWidget {

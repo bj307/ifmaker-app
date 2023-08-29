@@ -38,6 +38,9 @@ dependencies:
   simple_barcode_scanner: ^0.0.8
   qr_code_dart_scan: ^0.7.2
   pinput: ^3.0.1
+  http: ^1.1.0
+  html: ^0.15.4
+  universal_html: ^2.2.3
 
 dev_dependencies:
   flutter_test:
