@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:ifmaker_app/src/components/custom_text_field.dart';
 import 'package:ifmaker_app/src/dashboard/page_base.dart';
+import 'package:ifmaker_app/src/data/model/login_model.dart';
+import 'package:ifmaker_app/src/data/services/usuario_service.dart';
+import 'package:ifmaker_app/src/data/storage/session_storage.dart';
 
-
-class TelaLogin extends StatelessWidget {
+class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
+
+  @override
+  State<TelaLogin> createState() => _TelaLoginState();
+}
+
+class _TelaLoginState extends State<TelaLogin> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController senhaController = TextEditingController();
+
+  void _efetuarLogin() async {
+    final email = emailController.text;
+    final senha = senhaController.text;
+
+    final loginModel = LoginModel(email: email, senha: senha);
+
+    try {
+      final jwtPayload = await login(loginModel);
+
+      // Aqui você pode decidir o que fazer com os dados retornados do login
+      SessionStorageHelper.saveValue(
+          "jwtPayload", jwtPayload.toJson().toString());
+
+      // Navegar para a próxima página, por exemplo:
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (c) {
+          return const PageBase();
+        }),
+      );
+    } catch (e) {
+      // Tratar o erro do login, exibindo uma mensagem de erro, por exemplo.
+      print('Erro no login: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +132,14 @@ class TelaLogin extends StatelessWidget {
                     ),
                   ),
                   //email
-                  const CustomTextField(
+                  CustomTextField(
+                    controller: emailController,
                     icon: Icons.email,
                     label: 'Email',
                   ),
                   //senha
-                  const CustomTextField(
+                  CustomTextField(
+                    controller: senhaController,
                     icon: Icons.lock,
                     label: 'Senha',
                     isSecret: true,
@@ -118,12 +155,7 @@ class TelaLogin extends StatelessWidget {
                               backgroundColor: Colors.green,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))),
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (c) {
-                              return const PageBase();
-                            }));
-                          },
+                          onPressed: _efetuarLogin,
                           child: const Text(
                             'Entrar',
                             style: TextStyle(fontSize: 16, color: Colors.white),

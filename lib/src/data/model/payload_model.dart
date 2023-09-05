@@ -1,12 +1,34 @@
-class PayloadModel {
-  final String id;
-  final String nome;
-  final String jwtToken;
-  final String email;
+import 'dart:convert';
 
-  PayloadModel({required this.id, required this.nome, required this.jwtToken, required this.email});
+JwtPayload jwtPayloadFromJson(String str) =>
+    JwtPayload.fromJson(json.decode(str));
 
-  factory PayloadModel.fromMap(Map<String, dynamic> map) {
-    return PayloadModel(id: map['id'], nome: map['nome'], jwtToken: map['jwtToken'], email: map['email']);
-  }
+String jwtPayloadToJson(JwtPayload data) => json.encode(data.toJson());
+
+class JwtPayload {
+  String id;
+  String nome;
+  String jwtToken;
+  String email;
+
+  JwtPayload({
+    required this.id,
+    required this.nome,
+    required this.jwtToken,
+    required this.email,
+  });
+
+  factory JwtPayload.fromJson(Map<String, dynamic> json) => JwtPayload(
+        id: json["id"],
+        nome: json["nome"],
+        jwtToken: json["jwtToken"],
+        email: json["email"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "nome": nome,
+        "jwtToken": jwtToken,
+        "email": email,
+      };
 }
