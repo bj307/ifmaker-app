@@ -8,8 +8,6 @@ import 'package:ifmaker_app/src/dashboard/page_base.dart' as page_base;
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +92,7 @@ class HomeTab extends StatelessWidget {
                                 itemCount: app_data.projects.length,
                                 itemBuilder: (_, index) {
                                   return ProjetoCard(
-                                      project: app_data.projects[index]);
+                                      projectInfo: app_data.projects[index]);
                                 })),
                       ],
                     )),
