@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ifmaker_app/src/dashboard/home/home_tab.dart';
 import 'package:ifmaker_app/src/dashboard/ponto/qr_code_ponto.dart';
+import 'package:ifmaker_app/src/data/storage/session_storage.dart';
+import 'dart:convert';
 
 class PageBase extends StatefulWidget {
   const PageBase({super.key});
@@ -29,6 +31,9 @@ class _PageBaseState extends State<PageBase> {
 
   @override
   Widget build(BuildContext context) {
+    String jwt = SessionStorageHelper.getValue("jwtPayload");
+    //Map<String, dynamic> jsonMap = json.decode(jwt);
+
     return Scaffold(
       key: scaffoldKey,
       //appbar
@@ -38,6 +43,7 @@ class _PageBaseState extends State<PageBase> {
           child: GestureDetector(
             onTap: () {
               scaffoldKey.currentState?.openDrawer();
+              print(key);
               //abre menu lateral drawer
             },
             child: Container(
