@@ -18,6 +18,7 @@ class PageBase extends StatefulWidget {
 class _PageBaseState extends State<PageBase> {
   int currencyIndex = 0;
   final pageController = PageController();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void changePage(int index) {
     setState(() {
@@ -29,34 +30,32 @@ class _PageBaseState extends State<PageBase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       //appbar
       appBar: AppBar(
-        actions: [
-          //menu
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  currencyIndex = 0;
-                  pageController.jumpToPage(currencyIndex);
-                });
-              }, //abre menu
-              child: Container(
-                width: 40, // Largura do ícone (ajuste conforme necessário)
-                height: 40, // Altura do ícone (ajuste conforme necessário)
-                decoration: BoxDecoration(
-                  color: Colors.green, // Cor de fundo
-                  borderRadius:
-                      BorderRadius.circular(7), // Metade da largura/altura
-                ),
-                child: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+          child: GestureDetector(
+            onTap: () {
+              scaffoldKey.currentState?.openDrawer();
+              //abre menu lateral drawer
+            },
+            child: Container(
+              // width: 40, // Largura do ícone (ajuste conforme necessário)
+              // height: 40, // Altura do ícone (ajuste conforme necessário)
+              decoration: BoxDecoration(
+                color: Colors.green, // Cor de fundo
+                borderRadius:
+                    BorderRadius.circular(7), // Metade da largura/altura
+              ),
+              child: const Icon(
+                Icons.menu,
+                color: Colors.white,
               ),
             ),
           ),
+        ),
+        actions: [
           const Spacer(),
           //perfil
           Padding(
@@ -81,6 +80,33 @@ class _PageBaseState extends State<PageBase> {
         ],
       ),
 
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Pagina 1'),
+              // onTap: () {
+              //   print()
+              // },
+            ),
+            ListTile(
+              leading: Icon(Icons.plus_one_outlined),
+              title: Text('Pagina 2'),
+              // onTap: () {
+
+              // },
+            )
+          ],
+        ),
+      ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,

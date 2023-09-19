@@ -11,11 +11,18 @@ class ProjetoPage extends StatefulWidget {
 }
 
 class _ProjetoPageState extends State<ProjetoPage> {
-  String? teste;
+  late String title;
+
+  @override
+  void initState() {
+    super.initState();
+    title = widget.projectInfo.titulo;
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: AppBarComponent(),
       ),
@@ -23,14 +30,14 @@ class _ProjetoPageState extends State<ProjetoPage> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 16, top: 22),
+            padding: const EdgeInsets.only(left: 16, top: 22),
             child: Align(
               alignment: Alignment.topLeft,
               child:
-                  Text.rich(TextSpan(style: TextStyle(fontSize: 20), children: [
+                  Text.rich(TextSpan(style: const TextStyle(fontSize: 20), children: [
                 TextSpan(
-                    text: widget.projectInfo.titulo,
-                    style: TextStyle(
+                    text: title,
+                    style: const TextStyle(
                         color: Color(0xFF474747), fontWeight: FontWeight.bold))
               ])),
             ),
