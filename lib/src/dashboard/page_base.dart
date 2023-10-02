@@ -32,7 +32,18 @@ class _PageBaseState extends State<PageBase> {
   @override
   Widget build(BuildContext context) {
     String jwt = SessionStorageHelper.getValue("jwtPayload");
-    //Map<String, dynamic> jsonMap = json.decode(jwt);
+    jwt = jwt
+        .replaceAll(':', '":"')
+        .replaceAll(',', '","')
+        .replaceAll('{', '{"')
+        .replaceAll('}', '"}')
+        .replaceAll(' ', '');
+    Map<String, dynamic> jsonData = jsonDecode(jwt);
+
+    String id = jsonData['id'];
+    String nome = jsonData['nome'];
+    String jwtToken = jsonData['jwtToken'];
+    String email = jsonData['email'];
 
     return Scaffold(
       key: scaffoldKey,
@@ -43,7 +54,7 @@ class _PageBaseState extends State<PageBase> {
           child: GestureDetector(
             onTap: () {
               scaffoldKey.currentState?.openDrawer();
-              print(key);
+              print(nome);
               //abre menu lateral drawer
             },
             child: Container(
@@ -89,21 +100,21 @@ class _PageBaseState extends State<PageBase> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const [
+          children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.green,
               ),
-              child: Text('Drawer Header'),
+              child: Text(nome),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.home),
               title: Text('Pagina 1'),
               // onTap: () {
               //   print()
               // },
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.plus_one_outlined),
               title: Text('Pagina 2'),
               // onTap: () {
